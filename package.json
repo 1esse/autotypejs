@@ -1,0 +1,11 @@
+{
+  "name": "autotypejs",
+  "version": "1.0.0",
+  "description": "use for typing automatically.",
+  "main": "autotype.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Jesse Zhao",
+  "license": "MIT"
+}
