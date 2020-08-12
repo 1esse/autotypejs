@@ -204,9 +204,9 @@ export default {
 // ...
 // 调用config函数并传入一个对象参数可以配置一些属性，也可以在实例化的时候以第二个参数传入构造器进行属性配置
 autoType.config({
-    cursor_typing = 'cursor_typing',
-    cursor_stay = 'cursor_stay',
-    loop = false,
+    cursor_typing: 'cursor_typing',
+    cursor_stay: 'cursor_stay',
+    loop: false,
 })
 /** 可配置属性
 * cursor_typing: 打字时游标的css类名
