@@ -37,6 +37,9 @@ var AutoType = /*#__PURE__*/function () {
     this._task_count = 0;
     /** 计算任务数量 */
 
+    this.doneAction = null;
+    /** 打字完成执行动作 */
+
     this.config(config);
     if (typeof dom_selector === 'string') this.dom = document.querySelector(dom_selector);else throw TypeError('请传入正确的dom节点选择器');
   }
@@ -273,6 +276,8 @@ var AutoType = /*#__PURE__*/function () {
                     this._task_queue = [];
                     this.runTask();
                   }
+
+                  this.doneAction && this.doneAction();
                 }
 
               case 59:
@@ -289,6 +294,12 @@ var AutoType = /*#__PURE__*/function () {
 
       return runTask;
     }()
+  }, {
+    key: "onceDone",
+    value: function onceDone() {
+      var cb = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+      if (cb) this.doneAction = cb;
+    }
   }, {
     key: "_render",
     value: function _render(content) {

@@ -5,6 +5,7 @@ export default class AutoType {
         this.history_stack = [] /** 历史内容栈 */
         this._task_queue = [] /** 任务队列2-收集已执行的任务 */
         this._task_count = 0 /** 计算任务数量 */
+        this.doneAction = null /** 打字完成执行动作 */
         this.config(config)
         if (typeof dom_selector === 'string')
             this.dom = document.querySelector(dom_selector)
@@ -112,7 +113,12 @@ export default class AutoType {
                 this._task_queue = []
                 this.runTask()
             }
+            this.doneAction && this.doneAction()
         }
+    }
+
+    onceDone(cb = null) {
+        if (cb) this.doneAction = cb
     }
 
     _render(content, save_step = true) {
