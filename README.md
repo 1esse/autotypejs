@@ -5,7 +5,7 @@ use for typing automatically.
 使用原生JavaScript（es6）实现的自动打字效果。
 
 ### 效果图
-![效果图](https://github.com/1esse/images/blob/master/WeChat-20200812194957.gif?raw=true)
+![效果图](http://p6-tt-ipv6.byteimg.com/img/tos-cn-i-0022/dce7647425dd4813820762df19971f19~tplv-shrink:222:480.image?from=post)
 
 示例代码(vue)：
 ```vue
