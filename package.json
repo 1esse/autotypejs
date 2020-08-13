@@ -1,6 +1,6 @@
 {
   "name": "autotypejs",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "use for typing automatically.",
   "main": "autotype.js",
   "scripts": {
