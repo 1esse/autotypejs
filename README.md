@@ -22,6 +22,7 @@ export default {
     autoType.config({
       loop: false,
       show_cursor: true,
+      enable_delete: true,
     });
     autoType
       .setStage({
@@ -181,7 +182,7 @@ npm install --save autotypejs
 ```
 
 #### vue：
-```vue
+```javascript
 <template>
   <div class="type-container"></div>
 </template>
@@ -214,6 +215,7 @@ autoType.config({
 * loop: 是否循环
 * show_cursor: 是否显示游标
 * show_end_cursor: 打字结束时是否显示游标
+* enable_delete: 是否开启删除，如果是超长文本内容，不建议开启
 */
 ```
 
@@ -269,3 +271,4 @@ autoType.onceDone(() => {
 2. 游标的样式类默认为（停留：cursor_stay，打字中：cursor_typing），如果自定义游标的样式类（参考autotype.css），需要重新[配置游标类名](#config配置)。
 3. 每设置一个stage为一个阶段，一个完整的任务是按顺序执行完所有阶段。
 4. [监听任务完成事件](#oncedone监听任务完成事件)为每完整执行一次任务触发一次，这意味着开启loop循环的情况下每执行完一次都会触发一遍。
+5. 删除功能默认关闭，如需开启请配置 enable_delete: true; 如果文本内容太长建议关闭以节省内存。
