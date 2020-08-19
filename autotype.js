@@ -56,12 +56,15 @@ var AutoType = /*#__PURE__*/function () {
           _ref$show_cursor = _ref.show_cursor,
           show_cursor = _ref$show_cursor === void 0 ? true : _ref$show_cursor,
           _ref$show_end_cursor = _ref.show_end_cursor,
-          show_end_cursor = _ref$show_end_cursor === void 0 ? true : _ref$show_end_cursor;
+          show_end_cursor = _ref$show_end_cursor === void 0 ? true : _ref$show_end_cursor,
+          _ref$enable_delete = _ref.enable_delete,
+          enable_delete = _ref$enable_delete === void 0 ? false : _ref$enable_delete;
       this.cursor_typing = cursor_typing;
       this.cursor_stay = cursor_stay;
       this.loop = loop;
       this.show_cursor = show_cursor;
       this.show_end_cursor = show_end_cursor;
+      this.enable_delete = enable_delete;
     } // 描述一段内容的展示方式
 
   }, {
@@ -134,7 +137,7 @@ var AutoType = /*#__PURE__*/function () {
 
               case 3:
                 _context.t0 = stage.type;
-                _context.next = _context.t0 === 'add' ? 6 : _context.t0 === 'delete' ? 42 : 56;
+                _context.next = _context.t0 === 'add' ? 6 : _context.t0 === 'delete' ? 42 : 62;
                 break;
 
               case 6:
@@ -226,38 +229,57 @@ var AutoType = /*#__PURE__*/function () {
                 this._render(this.type_content);
 
               case 41:
-                return _context.abrupt("break", 56);
+                return _context.abrupt("break", 62);
 
               case 42:
-                if (stage.delete_count > this.history_stack.length) stage.delete_count = this.history_stack.length;
-                delay = Math.floor(stage.duration / (stage.delete_count || 1));
-                stage.delete_count === 0 && this._sleep(delay);
-                i = 0;
-
-              case 46:
-                if (!(i < stage.delete_count)) {
-                  _context.next = 55;
+                if (this.enable_delete) {
+                  _context.next = 45;
                   break;
                 }
 
-                _context.next = 49;
+                console.warn('删除功能未开启，如需删除，请添加配置 enable_delete: true;');
+                return _context.abrupt("break", 62);
+
+              case 45:
+                if (stage.delete_count > this.history_stack.length) stage.delete_count = this.history_stack.length;
+                delay = Math.floor(stage.duration / (stage.delete_count || 1));
+                _context.t3 = stage.delete_count === 0;
+
+                if (!_context.t3) {
+                  _context.next = 51;
+                  break;
+                }
+
+                _context.next = 51;
                 return this._sleep(delay);
 
-              case 49:
+              case 51:
+                i = 0;
+
+              case 52:
+                if (!(i < stage.delete_count)) {
+                  _context.next = 61;
+                  break;
+                }
+
+                _context.next = 55;
+                return this._sleep(delay);
+
+              case 55:
                 this.history_stack.pop();
                 this.type_content = this.history_stack[this.history_stack.length - 1] || '';
 
                 this._render(this.type_content, false);
 
-              case 52:
+              case 58:
                 i++;
-                _context.next = 46;
+                _context.next = 52;
                 break;
 
-              case 55:
-                return _context.abrupt("break", 56);
+              case 61:
+                return _context.abrupt("break", 62);
 
-              case 56:
+              case 62:
                 this._task_queue.push(stage);
 
                 this.task_queue.length > 0 && this.runTask();
@@ -280,7 +302,7 @@ var AutoType = /*#__PURE__*/function () {
                   this.doneAction && this.doneAction();
                 }
 
-              case 59:
+              case 65:
               case "end":
                 return _context.stop();
             }
@@ -311,7 +333,7 @@ var AutoType = /*#__PURE__*/function () {
       }
 
       this.dom.innerHTML = content;
-      if (save_step) this.history_stack.push(content);
+      if (this.enable_delete && save_step) this.history_stack.push(content);
     }
   }, {
     key: "_sleep",

@@ -18,20 +18,22 @@ export default class AutoType {
         loop = false, /** 是否循环 */
         show_cursor = true, /** 是否显示游标 */
         show_end_cursor = true, /** 打字结束时是否显示游标 */
+        enable_delete = false, /** 是否开启删除，如果是超长文本内容，不建议开启 */
     }) {
         this.cursor_typing = cursor_typing
         this.cursor_stay = cursor_stay
         this.loop = loop
         this.show_cursor = show_cursor
         this.show_end_cursor = show_end_cursor
+        this.enable_delete = enable_delete
     }
     // 描述一段内容的展示方式
     setStage({
         media = 'text', /** 媒体类型 text-文本，image-图片 */
         text = '', /** 添加文字 */
-        duration = 0, /** 写完该stage的时长 */
+        duration = 0, /** 该stage执行时长 */
         type = 'add', /** 类型 add-添加，delete-删除 */
-        delete_count = 0, /** 删除个数，type为delete的时候触发 */
+        delete_count = 0, /** 删除个数，type为delete的时候提供 */
         src = '', /** 媒体类型为image时提供 */
         line_wrap = false, /** 是否换行 */
         style = '', /** 样式，接受字符串或者对象参数 */
@@ -87,9 +89,13 @@ export default class AutoType {
                 }
                 break
             case 'delete':
+                if (!this.enable_delete) {
+                    console.warn('删除功能未开启，如需删除，请添加配置 enable_delete: true;')
+                    break
+                }
                 if (stage.delete_count > this.history_stack.length) stage.delete_count = this.history_stack.length
                 const delay = Math.floor(stage.duration / (stage.delete_count || 1))
-                stage.delete_count === 0 && this._sleep(delay)
+                stage.delete_count === 0 && await this._sleep(delay)
                 for (let i = 0; i < stage.delete_count; i++) {
                     await this._sleep(delay)
                     this.history_stack.pop()
@@ -127,7 +133,7 @@ export default class AutoType {
             this.dom.classList.add(this.cursor_typing)
         }
         this.dom.innerHTML = content
-        if (save_step)
+        if (this.enable_delete && save_step)
             this.history_stack.push(content)
     }
 
